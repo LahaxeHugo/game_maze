@@ -1,0 +1,41 @@
+body {
+	background-color: black;
+	min-height: 100vh;
+	font-family: Ubuntu, sans-serif;
+	overflow: hidden;
+}
+main {
+	padding: 10px;
+	box-sizing: border-box;
+}
+main > section {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding-top: 10px;
+	box-sizing: border-box;
+	min-height: calc(100vh - 25px - 20px);
+}
+
+#grid {
+	background-color: #585858;
+	position: relative;
+	margin-bottom: 20px;
+}
+
+.pixel {
+	position: absolute;
+	box-sizing: border-box;
+	background-size: cover;
+}
+/* .pixel[type="1"] { background-color: white;} */
+.pixel[visible="1"] {background-color: #333;}
+.pixel[visible="1"][type="1"] {background-color: white;}
+.pixel[visible="1"][type="2"] {background-color: white; background-image: url('../img/key.png');}
+.pixel[visible="1"][type="3"] {background-color: white; background-image: url('../img/lock.png');}
+
+.pixel[player="1"] {
+	background-color: white;
+	background-image: url('../img/unicorn.png');
+}
