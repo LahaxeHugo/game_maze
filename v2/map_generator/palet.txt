@@ -1,0 +1,6 @@
+Wall:  #000000
+Room:  #FFFFFF
+Key:   #FFFF00
+Door:  #00FF00
+Start: #0000FF
+End:   #FF0000
