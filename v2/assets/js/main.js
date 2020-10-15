@@ -73,7 +73,7 @@ function loadMap(map) {
 }
 
 if(typeof mapJSON === 'undefined') {
-	loadMap();
+	loadMap(map_option.value);
 } else {
 	data = JSON.parse(mapJSON);
 
