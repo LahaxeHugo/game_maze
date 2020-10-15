@@ -24,7 +24,7 @@ function gridGenerate() {
 function mapGenerate(map) {
 	for(y in map) {
 		for(x in map[y]) {
-			roomPixel(y, x, map[y][x]);
+			mapPixel(y, x, map[y][x]);
 		}
 	}
 }
@@ -33,7 +33,7 @@ function getPixelEl(y, x) {
 	return document.querySelector('.pixel[data-y="'+y+'"][data-x="'+x+'"]');
 }
 
-function roomPixel(y, x, type = 1) {
+function mapPixel(y, x, type = 1) {
 	grid[y][x].type = type;
 	let el = getPixelEl(y, x);
 	el.setAttribute('type', type);
