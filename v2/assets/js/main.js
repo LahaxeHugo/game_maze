@@ -1,6 +1,6 @@
 const gridDisplay = document.getElementById('grid');
 var data;
-var gridSize;
+var gridSize = {y: 15, x: 15};
 var grid = [];
 var player;
 var playerView = [];
@@ -12,6 +12,19 @@ if(window.innerWidth < 500)	{
 	document.getElementById('d-pad').style.display = 'block';
 }
 const dPadArrow = document.querySelectorAll('#d-pad > .pad');
+
+const map_option = document.getElementById('map-option');
+
+map_option.addEventListener('change', function() {
+	this.blur();
+	let map = this.value;
+	if(map === 'user-map') {
+		data = JSON.parse(mapJSON);
+		init();
+	} else {
+		loadMap(map);
+	}
+});
 
 // Play Key Z,Q,S,D or ↑,→,↓,←
 document.addEventListener('keydown', e => {
@@ -46,7 +59,7 @@ function init() {
 	playerInit(player);
 }
 
-function loadMap() {
+function loadMap(map) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -54,8 +67,21 @@ function loadMap() {
 			init();
 		}
 	};
-	xhttp.open("GET", "map/map.json", true);
+	xhttp.open('POST', 'map/'+map+'.json', true);
 	xhttp.send();
 
 }
-loadMap();
+
+if(typeof mapJSON === 'undefined') {
+	loadMap();
+} else {
+	data = JSON.parse(mapJSON);
+
+	let option = document.createElement('option');
+	option.value = 'user-map';
+	option.text = 'Your map';
+	option.setAttribute('selected', true);
+	map_option.prepend(option);
+
+	init();
+}

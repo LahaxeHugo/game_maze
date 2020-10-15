@@ -22,7 +22,6 @@ function gridGenerate() {
 }
 
 function mapGenerate(map) {
-	console.log(map);
 	for(y in map) {
 		for(x in map[y]) {
 			roomPixel(y, x, map[y][x]);
@@ -96,8 +95,8 @@ function playerViewUpdate() {
 	for(let i = 0; i < playerView.length; i++) {
 		playerView[i].el.setAttribute('visible', '0');
 	}
-	
 	playerView = [];
+
 	if(player.x-1 >= 0) {playerViewPixel(player.y, player.x-1);}
 	if(player.x-1 >= 0 && player.y-1 >= 0) {playerViewPixel(player.y-1, player.x-1);}
 	if(player.y-1 >= 0) {playerViewPixel(player.y-1, player.x);}
