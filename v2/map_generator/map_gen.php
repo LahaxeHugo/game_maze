@@ -43,7 +43,7 @@
 		// echo '<pre>'.print_r($data, true).'</pre>';
 		$json = json_encode($data, JSON_FORCE_OBJECT);
 		if($upload === TRUE) {
-			file_put_contents('../map/'.$name.'.json', $json);
+			file_put_contents('./map/'.$name.'.json', $json);
 		}
 	}
 
