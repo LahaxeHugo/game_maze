@@ -80,6 +80,7 @@ function playerMove(direction) {
 				
 				let newEl = getPixelEl(newPos.y, newPos.x);
 				grid[newPos.y][newPos.x].player = 1;
+				grid[newPos.y][newPos.x].type = 1;
 				newEl.setAttribute('player','1');
 				newEl.setAttribute('type','1');
 				player = {y: newPos.y, x: newPos.x};
