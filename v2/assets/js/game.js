@@ -1,8 +1,6 @@
 function gridGenerate() {
 	gridDisplay.style.width = gridSize.x*pixelSize+'px';
 	gridDisplay.style.height = gridSize.y*pixelSize+'px';
-	grid = [];
-	gridDisplay.innerHTML = '';
 	
 	for (let i = 0; i < gridSize.y; i++) {
 		grid[i] = [];
@@ -57,19 +55,25 @@ function playerMove(direction) {
 
 	if(newPos.x >= 0 && newPos.x < gridSize.x && newPos.y >= 0 && newPos.y < gridSize.y) {
 		let type = grid[newPos.y][newPos.x].type;
-		// type = 1;
 		if(type !== 0) {
+			let update = false;
 			if(type === 3 || type === 5) {
 				if(doorKey > 0) {
 					doorKey--;
 					if(type === 5) {
 						alert('You win !');
 						init();
+					} else {
+						update = true;	
 					}
 				} else {
 					alert('Find the key !');
 				}
 			} else {
+				update = true;
+			}
+
+			if(update === true) {
 				grid[player.y][player.x].player = 0;
 				let currEl = getPixelEl(player.y, player.x);
 				currEl.setAttribute('player','0');
@@ -77,6 +81,7 @@ function playerMove(direction) {
 				let newEl = getPixelEl(newPos.y, newPos.x);
 				grid[newPos.y][newPos.x].player = 1;
 				newEl.setAttribute('player','1');
+				newEl.setAttribute('type','1');
 				player = {y: newPos.y, x: newPos.x};
 				
 				playerViewUpdate();
@@ -86,25 +91,33 @@ function playerMove(direction) {
 					doorKey++;
 				}
 			}
-
 		}
 	}
 }
 
 function playerViewUpdate() {
+	let area = viewRadius*2+1;
+
 	for(let i = 0; i < playerView.length; i++) {
 		playerView[i].el.setAttribute('visible', '0');
 	}
 	playerView = [];
+	
 
-	if(player.x-1 >= 0) {playerViewPixel(player.y, player.x-1);}
-	if(player.x-1 >= 0 && player.y-1 >= 0) {playerViewPixel(player.y-1, player.x-1);}
-	if(player.y-1 >= 0) {playerViewPixel(player.y-1, player.x);}
-	if(player.y-1 >= 0 && player.x+1 < gridSize.x) {playerViewPixel(player.y-1, player.x+1);}
-	if(player.x+1 < gridSize.x) {playerViewPixel(player.y, player.x+1);}
-	if(player.x+1 < gridSize.x && player.y+1 < gridSize.y) {playerViewPixel(player.y+1, player.x+1);}
-	if(player.y+1 < gridSize.y) {playerViewPixel(player.y+1, player.x);}
-	if(player.y+1 < gridSize.y && player.x-1 >= 0) {playerViewPixel(player.y+1, player.x-1);}
+	let start = {
+		y: player.y-viewRadius,
+		x: player.x-viewRadius
+	}
+	
+	for(i = 0; i < area; i++) {
+		for(j = 0; j < area; j++) {
+			let y = start.y+i;
+			let x = start.x+j;
+			if(grid[y] && grid[y][x]) {
+				playerViewPixel(y, x);
+			}
+		}
+	}
 }
 
 function playerViewPixel(y, x) {

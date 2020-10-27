@@ -20,11 +20,11 @@
 		</div>
 		<div class="mg-key_init">
 			<label for="mg-key_init">Key(s) at start :</label>
-			<input type="number" name="mg-key_init" id="mg-key_init" required>
+			<input type="number" name="mg-key_init" id="mg-key_init">
 		</div>
 		<div class="mg-view_radius">
 			<label for="mg-view_radius">View Radius :</label>
-			<input type="number" name="mg-view_radius" id="mg-view_radius" required>
+			<input type="number" name="mg-view_radius" id="mg-view_radius">
 		</div>
 		<div class="mg-passwd">
 			<label for="mg-passwd">Upload Password :</label>

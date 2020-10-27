@@ -1,30 +1,86 @@
-const gridDisplay = document.getElementById('grid');
-var data;
-var gridSize = {y: 15, x: 15};
-var grid = [];
-var player;
-var playerView = [];
-var doorKey;
-
-var pixelSize = 30;
-if(window.innerWidth < 500)	{
-	pixelSize = Math.floor(window.innerWidth/gridSize.x)-1;
-	document.getElementById('d-pad').style.display = 'block';
+function initResize() {
+	if(window.innerWidth < 500)	{
+		pixelSize = Math.floor(window.innerWidth/gridSize.x)-1;
+		dPad.style.display = 'block';
+	} else {
+		pixelSize = 30;
+		dPad.style.display = 'none';
+	}
 }
-const dPadArrow = document.querySelectorAll('#d-pad > .pad');
 
-const map_option = document.getElementById('map-option');
+function init() {
+	gridDisplay.innerHTML = '';
+	grid = [];
+	playerView = [];
+	gridSize = {y: data.settings.grid_size.y, x: data.settings.grid_size.x};
+	player = {y: data.settings.start.y, x: data.settings.start.x};
+	doorKey = data.settings.key_init;
+	viewRadius = data.settings.view_radius;
+	initResize();
+	gridGenerate();
+	mapGenerate(data.map);
+	playerInit(player);
+}
 
-map_option.addEventListener('change', function() {
+function loadMap(map) {
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			data = JSON.parse(this.responseText);
+			init();
+		}
+	};
+	xhttp.open('POST', 'map/'+map+'.json', true);
+	xhttp.send();
+}
+
+function imagePreload() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			imageArray = JSON.parse(this.responseText);
+			imageGenerateObj(imageArray);
+		}
+	};
+	xhttp.open('POST', 'app/handler/img_handler.php', true);
+	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhttp.send('type=getAll');
+}
+
+function imageGenerateObj(imageArray) {
+	var images = [];
+	for(let i = 0; i < imageArray.length; i++) {
+		images[i] = new Image();
+		images[i].src = imageArray[i];
+	}
+}
+
+mapOption.addEventListener('change', function() {
 	this.blur();
 	let map = this.value;
 	if(map === 'user-map') {
 		data = JSON.parse(mapJSON);
 		init();
-	} else {
+	} else {		
 		loadMap(map);
 	}
 });
+
+
+// imagePreload();
+if(typeof mapJSON === 'undefined') {
+	loadMap(mapOption.value);
+} else {
+	data = JSON.parse(mapJSON);
+	
+	let option = document.createElement('option');
+	option.value = 'user-map';
+	option.text = 'Your map';
+	option.setAttribute('selected', true);
+	mapOption.prepend(option);
+	
+	init();
+}
 
 // Play Key Z,Q,S,D or ↑,→,↓,←
 document.addEventListener('keydown', e => {
@@ -45,43 +101,4 @@ for(let i = 0; i < dPadArrow.length; i++) {
 		direction = this.getAttribute('direction');
 		playerMove(direction);
 	});
-}
-
-function init() {
-	gridDisplay.innerHTML = '';
-	grid = [];
-	playerView = [];
-	gridSize = {y: data.settings.grid_size.y, x: data.settings.grid_size.x};
-	player = {y: data.settings.start.y, x: data.settings.start.x};
-	doorKey = data.settings.key_init;
-	gridGenerate();
-	mapGenerate(data.map);
-	playerInit(player);
-}
-
-function loadMap(map) {
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			data = JSON.parse(this.responseText);
-			init();
-		}
-	};
-	xhttp.open('POST', 'map/'+map+'.json', true);
-	xhttp.send();
-
-}
-
-if(typeof mapJSON === 'undefined') {
-	loadMap(map_option.value);
-} else {
-	data = JSON.parse(mapJSON);
-
-	let option = document.createElement('option');
-	option.value = 'user-map';
-	option.text = 'Your map';
-	option.setAttribute('selected', true);
-	map_option.prepend(option);
-
-	init();
 }
