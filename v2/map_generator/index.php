@@ -1,3 +1,6 @@
+<?php
+	include_once '../app/include.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +9,7 @@
 	<title>Upload Your own map</title>
 </head>
 <body>
-	<form id="mg" action="../" method="post" enctype="multipart/form-data">
+	<form id="mg" action="<?php echo ROOT_PATH; ?>" method="post" enctype="multipart/form-data">
 		<!-- <div class="mg-type">
 			<label for="mg-type">Type :</label>
 			<select name="mg-type" id="mg-type">

@@ -42,9 +42,10 @@ function imagePreload() {
 			imageGenerateObj(imageArray);
 		}
 	};
-	xhttp.open('POST', 'app/handler/img_handler.php', true);
+	xhttp.open('POST', 'app/ajax.php', true);
+
 	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	xhttp.send('type=getAll');
+	xhttp.send('action=img&type=getAll');
 }
 
 function imageGenerateObj(imageArray) {
@@ -67,7 +68,7 @@ mapOption.addEventListener('change', function() {
 });
 
 
-// imagePreload();
+imagePreload();
 if(typeof mapJSON === 'undefined') {
 	loadMap(mapOption.value);
 } else {
